@@ -4,95 +4,591 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 <title>Company Database</title>
+
 <style>
-*{box-sizing:border-box} body{margin:0;background:#f3f5f9;font-family:Arial,sans-serif;color:#18212f}
-.app{max-width:480px;margin:auto;min-height:100vh;background:#fff}
-.top{padding:22px 18px 16px;background:#1f3a5f;color:white;border-radius:0 0 22px 22px}
-.top h1{margin:0;font-size:23px}.top p{margin:5px 0 0;opacity:.85;font-size:13px}
-.content{padding:16px}.stats{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:14px}
-.card{background:#f6f8fb;border-radius:16px;padding:14px}.stat b{font-size:25px;display:block}.stat span{font-size:12px;color:#697586}
-.search{width:100%;padding:13px;border:1px solid #d9dee7;border-radius:13px;font-size:15px;margin-bottom:10px}
-.actions{display:flex;gap:9px;margin-bottom:14px}.btn{border:0;border-radius:13px;padding:12px 14px;font-weight:700;cursor:pointer}
-.primary{background:#1f3a5f;color:white;flex:1}.secondary{background:#eaf0f7;color:#1f3a5f}
-.company{border:1px solid #e5e9ef;border-radius:16px;padding:14px;margin-bottom:10px}
-.company h3{margin:0 0 5px;font-size:16px}.muted{color:#687385;font-size:13px}
-.row{display:flex;gap:7px;margin-top:7px;font-size:13px}.pill{display:inline-block;background:#eef3f8;padding:5px 8px;border-radius:999px;font-size:11px;margin-top:8px}
-.form{display:none}.form input,.form select{width:100%;padding:12px;margin:6px 0;border:1px solid #d9dee7;border-radius:11px;font-size:14px}
-.form h2{font-size:19px}.bottom{position:sticky;bottom:0;background:#fff;border-top:1px solid #e8ebf0;padding:10px 16px;display:flex;gap:8px}
-.small{font-size:12px}.edit{background:#eef3f8;border:0;padding:7px 9px;border-radius:9px}.del{background:#fff0f0;border:0;padding:7px 9px;border-radius:9px}
-.hidden{display:none}
+*{box-sizing:border-box}
+body{
+    margin:0;
+    background:#f3f5f9;
+    font-family:Arial,sans-serif;
+    color:#18212f
+}
+.app{
+    max-width:480px;
+    margin:auto;
+    min-height:100vh;
+    background:#fff
+}
+.top{
+    padding:22px 18px 16px;
+    background:#1f3a5f;
+    color:white;
+    border-radius:0 0 22px 22px
+}
+.top h1{
+    margin:0;
+    font-size:23px
+}
+.top p{
+    margin:5px 0 0;
+    opacity:.85;
+    font-size:13px
+}
+.content{
+    padding:16px
+}
+.stats{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+    margin-bottom:14px
+}
+.card{
+    background:#f6f8fb;
+    border-radius:16px;
+    padding:14px
+}
+.stat b{
+    font-size:25px;
+    display:block
+}
+.stat span{
+    font-size:12px;
+    color:#697586
+}
+.search{
+    width:100%;
+    padding:13px;
+    border:1px solid #d9dee7;
+    border-radius:13px;
+    font-size:15px;
+    margin-bottom:10px
+}
+.actions{
+    display:flex;
+    gap:9px;
+    margin-bottom:14px
+}
+.btn{
+    border:0;
+    border-radius:13px;
+    padding:12px 14px;
+    font-weight:700;
+    cursor:pointer
+}
+.primary{
+    background:#1f3a5f;
+    color:white;
+    flex:1
+}
+.secondary{
+    background:#eaf0f7;
+    color:#1f3a5f
+}
+.company{
+    border:1px solid #e5e9ef;
+    border-radius:16px;
+    padding:14px;
+    margin-bottom:10px
+}
+.company h3{
+    margin:0 0 5px;
+    font-size:16px
+}
+.muted{
+    color:#687385;
+    font-size:13px
+}
+.row{
+    display:flex;
+    gap:7px;
+    margin-top:7px;
+    font-size:13px
+}
+.pill{
+    display:inline-block;
+    background:#eef3f8;
+    padding:5px 8px;
+    border-radius:999px;
+    font-size:11px;
+    margin-top:8px
+}
+.form{
+    display:none
+}
+.form input,
+.form select{
+    width:100%;
+    padding:12px;
+    margin:6px 0;
+    border:1px solid #d9dee7;
+    border-radius:11px;
+    font-size:14px
+}
+.form h2{
+    font-size:19px
+}
+.bottom{
+    position:sticky;
+    bottom:0;
+    background:#fff;
+    border-top:1px solid #e8ebf0;
+    padding:10px 16px;
+    display:flex;
+    gap:8px
+}
+.small{
+    font-size:12px
+}
+.edit{
+    background:#eef3f8;
+    border:0;
+    padding:7px 9px;
+    border-radius:9px
+}
+.del{
+    background:#fff0f0;
+    border:0;
+    padding:7px 9px;
+    border-radius:9px
+}
+.hidden{
+    display:none
+}
 </style>
 </head>
+
 <body>
+
 <div class="app">
-  <div class="top"><h1>Company Database</h1><p>Placement Office • Version 1</p></div>
-  <div class="content">
-    <div id="listView">
-      <div class="stats">
-        <div class="card stat"><b id="count">0</b><span>Total Companies</span></div>
-        <div class="card stat"><b id="industryCount">0</b><span>Industries</span></div>
-      </div>
-      <input id="search" class="search" placeholder="🔍 Search company, person, location..." oninput="render()">
-      <div class="actions">
-        <button class="btn primary" onclick="showForm()">＋ Add Company</button>
-        <a class="btn secondary" href="/export">📥 Excel</a>
-      </div>
-      <div id="companies"></div>
+
+    <div class="top">
+        <h1>Company Database</h1>
+        <p>Placement Office • Version 1</p>
     </div>
 
-    <div id="formView" class="form">
-      <button class="btn secondary" onclick="showList()">← Back</button>
-      <h2 id="formTitle">Add Company</h2>
-      <input id="company_name" placeholder="Company Name *">
-      <input id="company_location" placeholder="Company Location">
-      <input id="contact_person" placeholder="Contact Person">
-      <input id="designation" placeholder="Designation">
-      <input id="mobile_number" placeholder="Mobile Number" inputmode="tel">
-      <input id="email_id" placeholder="Email ID" type="email">
-      <input id="domain" placeholder="Domain (e.g. Software, Automotive)">
-      <select id="industry">
-        <option value="">Select Industry</option>
-        {% for x in industries %}<option>{{x}}</option>{% endfor %}
-      </select>
-      <button class="btn primary" style="width:100%;margin-top:8px" onclick="saveCompany()">Save Company</button>
+    <div class="content">
+
+        <div id="listView">
+
+            <div class="stats">
+                <div class="card stat">
+                    <b id="count">0</b>
+                    <span>Total Companies</span>
+                </div>
+
+                <div class="card stat">
+                    <b id="industryCount">0</b>
+                    <span>Industries</span>
+                </div>
+            </div>
+
+            <input
+                id="search"
+                class="search"
+                placeholder="🔍 Search company, person, location..."
+                oninput="render()"
+            >
+
+            <div class="actions">
+
+                <button
+                    class="btn primary"
+                    onclick="showForm()">
+                    ＋ Add Company
+                </button>
+
+                <button
+                    class="btn secondary"
+                    onclick="downloadExcel()">
+                    📥 Excel
+                </button>
+
+            </div>
+
+            <div id="companies"></div>
+
+        </div>
+
+
+        <div id="formView" class="form">
+
+            <button
+                class="btn secondary"
+                onclick="showList()">
+                ← Back
+            </button>
+
+            <h2 id="formTitle">Add Company</h2>
+
+            <input id="company_name" placeholder="Company Name *">
+
+            <input id="company_location" placeholder="Company Location">
+
+            <input id="contact_person" placeholder="Contact Person">
+
+            <input id="designation" placeholder="Designation">
+
+            <input
+                id="mobile_number"
+                placeholder="Mobile Number"
+                inputmode="tel"
+            >
+
+            <input
+                id="email_id"
+                placeholder="Email ID"
+                type="email"
+            >
+
+            <input
+                id="domain"
+                placeholder="Domain (e.g. Software, Automotive)"
+            >
+
+            <select id="industry">
+                <option value="">Select Industry</option>
+                {% for x in industries %}
+                <option>{{x}}</option>
+                {% endfor %}
+            </select>
+
+            <button
+                class="btn primary"
+                style="width:100%;margin-top:8px"
+                onclick="saveCompany()">
+                Save Company
+            </button>
+
+        </div>
+
     </div>
-  </div>
-  <div class="bottom"><span class="small">Excel export is A4 landscape</span></div>
+
+    <div class="bottom">
+        <span class="small">
+            Excel export is A4 landscape
+        </span>
+    </div>
+
 </div>
+
+
 <script>
-let data=[], editId=null;
-async function load(){data=await (await fetch('/api/companies')).json();render()}
+
+let data = [];
+let editId = null;
+
+
+/* Load companies */
+
+async function load(){
+
+    data = await (
+        await fetch('/api/companies')
+    ).json();
+
+    render();
+}
+
+
+/* Display companies */
+
 function render(){
- const q=document.getElementById('search').value.toLowerCase();
- const filtered=data.filter(x=>Object.values(x).join(' ').toLowerCase().includes(q));
- document.getElementById('count').textContent=data.length;
- document.getElementById('industryCount').textContent=new Set(data.map(x=>x.industry).filter(Boolean)).size;
- document.getElementById('companies').innerHTML=filtered.map(x=>`
-  <div class="company">
-   <h3>${esc(x.company_name)}</h3>
-   <div class="muted">📍 ${esc(x.company_location||'Location not added')}</div>
-   <div class="row">👤 ${esc(x.contact_person||'-')} • ${esc(x.designation||'-')}</div>
-   <div class="row">📞 ${esc(x.mobile_number||'-')}</div>
-   <div class="row">✉️ ${esc(x.email_id||'-')}</div>
-   <span class="pill">${esc(x.industry||'Industry not selected')} ${x.domain?'• '+esc(x.domain):''}</span>
-   <div style="margin-top:10px"><button class="edit" onclick="editCompany(${x.id})">✏️ Edit</button> <button class="del" onclick="deleteCompany(${x.id})">🗑️ Delete</button></div>
-  </div>`).join('') || '<div class="card muted">No companies found.</div>';
+
+    const q =
+        document
+        .getElementById('search')
+        .value
+        .toLowerCase();
+
+    const filtered =
+        data.filter(x =>
+            Object.values(x)
+            .join(' ')
+            .toLowerCase()
+            .includes(q)
+        );
+
+    document.getElementById('count').textContent =
+        data.length;
+
+    document.getElementById('industryCount').textContent =
+        new Set(
+            data
+            .map(x => x.industry)
+            .filter(Boolean)
+        ).size;
+
+
+    document.getElementById('companies').innerHTML =
+
+        filtered.map(x => `
+
+        <div class="company">
+
+            <h3>
+                ${esc(x.company_name)}
+            </h3>
+
+            <div class="muted">
+                📍 ${esc(x.company_location || 'Location not added')}
+            </div>
+
+            <div class="row">
+                👤 ${esc(x.contact_person || '-')}
+                •
+                ${esc(x.designation || '-')}
+            </div>
+
+            <div class="row">
+                📞 ${esc(x.mobile_number || '-')}
+            </div>
+
+            <div class="row">
+                ✉️ ${esc(x.email_id || '-')}
+            </div>
+
+            <span class="pill">
+                ${esc(x.industry || 'Industry not selected')}
+                ${x.domain ? '• ' + esc(x.domain) : ''}
+            </span>
+
+            <div style="margin-top:10px">
+
+                <button
+                    class="edit"
+                    onclick="editCompany(${x.id})">
+                    ✏️ Edit
+                </button>
+
+                <button
+                    class="del"
+                    onclick="deleteCompany(${x.id})">
+                    🗑️ Delete
+                </button>
+
+            </div>
+
+        </div>
+
+        `).join('')
+
+        ||
+
+        '<div class="card muted">No companies found.</div>';
 }
-function esc(v){return String(v??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]))}
-function showForm(){editId=null;document.getElementById('formTitle').textContent='Add Company';clearForm();listView.classList.add('hidden');formView.style.display='block'}
-function showList(){formView.style.display='none';listView.classList.remove('hidden');render()}
-function clearForm(){['company_name','company_location','contact_person','designation','mobile_number','email_id','domain'].forEach(id=>document.getElementById(id).value='');document.getElementById('industry').value=''}
-function fill(x){['company_name','company_location','contact_person','designation','mobile_number','email_id','domain'].forEach(id=>document.getElementById(id).value=x[id]||'');document.getElementById('industry').value=x.industry||''}
+
+
+/* Escape HTML */
+
+function esc(v){
+
+    return String(v ?? '')
+        .replace(
+            /[&<>"']/g,
+            m => ({
+                '&':'&amp;',
+                '<':'&lt;',
+                '>':'&gt;',
+                '"':'&quot;',
+                "'":'&#39;'
+            }[m])
+        );
+}
+
+
+/* Open Add Company */
+
+function showForm(){
+
+    editId = null;
+
+    document
+        .getElementById('formTitle')
+        .textContent = 'Add Company';
+
+    clearForm();
+
+    listView.classList.add('hidden');
+
+    formView.style.display = 'block';
+}
+
+
+/* Back to list */
+
+function showList(){
+
+    formView.style.display = 'none';
+
+    listView.classList.remove('hidden');
+
+    render();
+}
+
+
+/* Clear form */
+
+function clearForm(){
+
+    [
+        'company_name',
+        'company_location',
+        'contact_person',
+        'designation',
+        'mobile_number',
+        'email_id',
+        'domain'
+    ]
+    .forEach(
+        id =>
+        document.getElementById(id).value = ''
+    );
+
+    document.getElementById('industry').value = '';
+}
+
+
+/* Fill edit form */
+
+function fill(x){
+
+    [
+        'company_name',
+        'company_location',
+        'contact_person',
+        'designation',
+        'mobile_number',
+        'email_id',
+        'domain'
+    ]
+    .forEach(
+        id =>
+        document.getElementById(id).value = x[id] || ''
+    );
+
+    document.getElementById('industry').value =
+        x.industry || '';
+}
+
+
+/* Save company */
+
 async function saveCompany(){
- const payload={};['company_name','company_location','contact_person','designation','mobile_number','email_id','domain','industry'].forEach(id=>payload[id]=document.getElementById(id).value);
- const opts={method:editId?'PUT':'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)};
- const r=await fetch(editId?'/api/companies/'+editId:'/api/companies',opts);
- if(!r.ok){alert((await r.json()).error||'Save failed');return}
- await load();showList();
+
+    const payload = {};
+
+    [
+        'company_name',
+        'company_location',
+        'contact_person',
+        'designation',
+        'mobile_number',
+        'email_id',
+        'domain',
+        'industry'
+    ]
+    .forEach(
+        id =>
+        payload[id] =
+        document.getElementById(id).value
+    );
+
+
+    const opts = {
+
+        method: editId ? 'PUT' : 'POST',
+
+        headers: {
+            'Content-Type': 'application/json'
+        },
+
+        body: JSON.stringify(payload)
+
+    };
+
+
+    const r = await fetch(
+        editId
+        ? '/api/companies/' + editId
+        : '/api/companies',
+        opts
+    );
+
+
+    if(!r.ok){
+
+        alert(
+            (await r.json()).error ||
+            'Save failed'
+        );
+
+        return;
+    }
+
+
+    await load();
+
+    showList();
 }
-function editCompany(id){const x=data.find(a=>a.id===id);if(!x)return;editId=id;document.getElementById('formTitle').textContent='Edit Company';fill(x);listView.classList.add('hidden');formView.style.display='block'}
-async function deleteCompany(id){if(!confirm('Delete this company?'))return;await fetch('/api/companies/'+id,{method:'DELETE'});await load()}
+
+
+/* Edit company */
+
+function editCompany(id){
+
+    const x =
+        data.find(a => a.id === id);
+
+    if(!x) return;
+
+    editId = id;
+
+    document
+        .getElementById('formTitle')
+        .textContent = 'Edit Company';
+
+    fill(x);
+
+    listView.classList.add('hidden');
+
+    formView.style.display = 'block';
+}
+
+
+/* Delete company */
+
+async function deleteCompany(id){
+
+    if(
+        !confirm('Delete this company?')
+    ) return;
+
+    await fetch(
+        '/api/companies/' + id,
+        {
+            method:'DELETE'
+        }
+    );
+
+    await load();
+}
+
+
+/* Excel Download */
+
+function downloadExcel(){
+
+    window.location.href = '/export';
+
+}
+
+
+/* Start */
+
 load();
+
 </script>
+
 </body>
 </html>
