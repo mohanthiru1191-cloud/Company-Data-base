@@ -579,11 +579,7 @@ async function deleteCompany(id){
 
 function downloadExcel(){
 
-    if (window.AndroidDownload) {
-        window.AndroidDownload.downloadExcel();
-    } else {
-        window.location.href = '/export';
-    }
+    window.location.href = 'companydb://export';
 
 }
 
